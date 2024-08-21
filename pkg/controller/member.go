@@ -31,7 +31,6 @@ import (
 // 	Members []int `json:"members" binding:"required"`
 // }
 
-
 func GetMember(c *gin.Context) {
 	emailId := c.Query("emailId")
 	groupId := c.Query("groupId")
@@ -202,7 +201,7 @@ func DeleteGroupMembers(c *gin.Context) {
 	}
 
 	flag := true
-	var memList []int
+	
 	transaction := config.GetDB().Begin()
 
 	for i := 0; i < len(input.Members); i++ {
@@ -220,7 +219,31 @@ func DeleteGroupMembers(c *gin.Context) {
 				c.JSON(http.StatusNotFound, gin.H{"message": "Member not found in the group or user not authorized"})
 				return
 			}
-			memList = append(memList, input.Members[i])
+
+			var groupName string
+			var memberName string
+			result = transaction.Table("users").Where("id=?", input.Members[i]).Select("name").Scan(&memberName)
+			if result.Error != nil {
+				transaction.Rollback()
+				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+				return
+			}
+
+			result = transaction.Table("groups").Where("group_id=?", input.GroupId).Select("name").Scan(&groupName)
+			if result.Error != nil {
+				transaction.Rollback()
+				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+				return
+			}
+			activityDesc := fmt.Sprintf("%s was removed from group %s.", memberName,groupName)
+			activity := &models.Activity{GroupId: input.GroupId, ActivityDescription: activityDesc}
+			if err := transaction.Create(activity).Error; err != nil {
+				transaction.Rollback()
+				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+				return
+			}
+
+			
 		} else {
 			flag = false
 		}
@@ -228,27 +251,27 @@ func DeleteGroupMembers(c *gin.Context) {
 
 	transaction.Commit()
 
-	go func() {
-		var groupName string
+	// go func() {
+	// 	var groupName string
 
-		if err := config.GetDB().Model(&models.Group{}).Where("group_id=?", input.GroupId).Select("name").Scan(&groupName).Error; err != nil {
-			groupName = ""
-		} else {
-			groupName = "from" + groupName
-		}
+	// 	if err := config.GetDB().Model(&models.Group{}).Where("group_id=?", input.GroupId).Select("name").Scan(&groupName).Error; err != nil {
+	// 		groupName = ""
+	// 	} else {
+	// 		groupName = "from" + groupName
+	// 	}
 
-		var memIdList []string
-		for _, v := range memList {
-			var memId string
-			if err := config.GetDB().Model(&models.User{}).Where("id=?", v).Select("emai_id").Scan(&memId).Error; err != nil {
-				fmt.Println("Error fetching name:", err)
-			}
-			memIdList = append(memIdList, memId)
-		}
-		message := fmt.Sprintf("You were removed %s", groupName)
+	// 	var memIdList []string
+	// 	for _, v := range memList {
+	// 		var memId string
+	// 		if err := config.GetDB().Model(&models.User{}).Where("id=?", v).Select("emai_id").Scan(&memId).Error; err != nil {
+	// 			fmt.Println("Error fetching name:", err)
+	// 		}
+	// 		memIdList = append(memIdList, memId)
+	// 	}
+	// 	message := fmt.Sprintf("You were removed %s", groupName)
 
-		Maill(memIdList, "Remove from Group", message)
-	}()
+	// 	Maill(memIdList, "Remove from Group", message)
+	// }()
 
 	if !flag {
 		c.JSON(http.StatusOK, gin.H{"success": "Some Members Cannot be Deleted due to their balance in group."})
