@@ -42,7 +42,7 @@ func GenerateCsv(c *gin.Context) {
 	// }
 
 	c.Header("Content-Type", "text/csv")
-	c.Header("Context-Disposition", "attachment;filename=report.csv")
+	c.Header("Content-Disposition", "attachment;filename=report.csv")
 	csvWriter := csv.NewWriter(c.Writer)
 
 	var groupMemList []models.Group

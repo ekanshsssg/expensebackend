@@ -105,7 +105,7 @@ func AddExpense(c *gin.Context) {
 		return
 	}
 
-	activityDesc := fmt.Sprintf("%s added an expense '%s' of amount %f in '%s", userPaidName, input.Description, input.Amount, groupName)
+	activityDesc := fmt.Sprintf("%s added an expense '%s' of amount %s in '%s' ", userPaidName, input.Description, strconv.FormatFloat(input.Amount, 'f', 2, 64), groupName)
 	activity := &models.Activity{GroupId: input.GroupId, ActivityDescription: activityDesc}
 	if err := transaction.Create(activity).Error; err != nil {
 		transaction.Rollback()
