@@ -12,10 +12,6 @@ func init(){
 }
 
 func main() {
-	// r := gin.Default()
-	
-    // config.GetDB().AutoMigrate(&models.User{})
-
     r := routes.SetupRouter()
     r.Run(":"+os.Getenv("PORT"))
 }

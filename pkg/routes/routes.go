@@ -12,7 +12,7 @@ func SetupRouter() *gin.Engine {
 
 	router.POST("/auth/register", controller.Register)
 	router.POST("/auth/login", controller.Login)
-	router.POST("/auth/logout", controller.Logout)
+	// router.POST("/auth/logout", controller.Logout)
 
 	// router.GET("/", middlewares.CheckAuth, controller.SuccessConnection)
 	router.POST("/group/create-group",controller.CreateGroup);
@@ -23,13 +23,13 @@ func SetupRouter() *gin.Engine {
 	router.POST("/group/delete-members",middlewares.CheckAuth,controller.DeleteGroupMembers);
 
 	router.POST("/add-expense",middlewares.CheckAuth,controller.AddExpense);
-	router.GET("/get-expense",controller.GetExpenses);
-	router.GET("/get-balance",controller.GetBalances);
-	router.GET("/get-overall-balance",controller.GetOverallBalance);
-	router.POST("/add-settlement",controller.AddSettlement);
+	router.GET("/get-expense",middlewares.CheckAuth,controller.GetExpenses);
+	router.GET("/get-balance",middlewares.CheckAuth,controller.GetBalances);
+	router.GET("/get-overall-balance",middlewares.CheckAuth,controller.GetOverallBalance);
+	router.POST("/add-settlement",middlewares.CheckAuth,controller.AddSettlement);
 
-	router.GET("/activity",controller.GetActivity)
-	router.GET("/get-csv",controller.GenerateCsv)
+	router.GET("/activity",middlewares.CheckAuth,controller.GetActivity)
+	router.GET("/get-csv/:groupId",middlewares.CheckAuth,controller.GenerateCsv)
 
 	return router
 }

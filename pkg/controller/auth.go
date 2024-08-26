@@ -3,13 +3,13 @@ package controller
 import (
 	"expensebackend/pkg/config"
 	"expensebackend/pkg/models"
-	// "fmt"
+
 	"errors"
 	"net/http"
 	"os"
 	"time"
 
-	// "gorm.io/driver/mysql"
+	
 	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 
@@ -97,9 +97,9 @@ func Login(c *gin.Context) {
 
 }
 
-func Logout(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "logout success"})
-}
+// func Logout(c *gin.Context) {
+// 	c.JSON(http.StatusOK, gin.H{"message": "logout success"})
+// }
 
 // func SuccessConnection(c *gin.Context) {
 // 	config.GetDB()

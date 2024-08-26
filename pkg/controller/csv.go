@@ -30,7 +30,7 @@ func CheckBalanceWithValue(groupId int, memberId int) (float64,error) {
 }
 
 func GenerateCsv(c *gin.Context) {
-	groupId, err := strconv.Atoi(c.Query("groupId"))
+	groupId, err := strconv.Atoi(c.Param("groupId"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -72,10 +72,6 @@ func GenerateCsv(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
-
-	// print("--------------")
-	// print(len(allExpenses))
-	// c.JSON(http.StatusOK, gin.H{"expense": allExpenses, "groups": groupMemList})
 
 	// var rows [][]string
 

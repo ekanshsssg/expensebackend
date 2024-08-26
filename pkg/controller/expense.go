@@ -1,24 +1,11 @@
 package controller
 
 import (
-	// "database/sql"
-	// "errors"
 	"expensebackend/pkg/config"
-	// "sort"
-
-	// "expensebackend/pkg/controller"
 	"expensebackend/pkg/models"
 	"fmt"
-
-	// "encoding/csv"
-	// "fmt"
-	// "gorm.io/driver/sql"
-	// "fmt"
 	"net/http"
 	"strconv"
-
-	// "os"
-	// "time"
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/jinzhu/gorm"
