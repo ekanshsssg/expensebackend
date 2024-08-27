@@ -35,7 +35,9 @@ func SetupRouter() *gin.Engine {
 	router.POST("/add-settlement", middlewares.CheckAuth, controller.AddSettlement)
 
 	router.GET("/activity", middlewares.CheckAuth, controller.GetActivity)
-	router.GET("/get-csv/:groupId", middlewares.CheckAuth, controller.GenerateCsv)
+	router.GET("/get-csv", middlewares.CheckAuth, controller.GenerateCsv)
+	// router.GET("/get-csv/:groupId", controller.GenerateCsv)
+
 
 	return router
 }
