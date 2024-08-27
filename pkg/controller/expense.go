@@ -163,13 +163,13 @@ func GetExpenses(c *gin.Context) {
 		var amount float64
 
 		if expense.PaidBy == _userId {
-			result := config.GetDB().Table("expenseMembers").Select("Coalesce(SUM(amount),0)").Where("expense_id=? AND expense_member != ?", expense.ExpenseId, _userId).Scan(&amount)
+			result := config.GetDB().Table("expensemembers").Select("Coalesce(SUM(amount),0)").Where("expense_id=? AND expense_member != ?", expense.ExpenseId, _userId).Scan(&amount)
 			if result.Error != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 				return
 			}
 		} else {
-			result := config.GetDB().Table("expenseMembers").Select("Coalesce(SUM(amount),0)").Where("expense_id=? AND expense_member = ?", expense.ExpenseId, _userId).Scan(&amount)
+			result := config.GetDB().Table("expensemembers").Select("Coalesce(SUM(amount),0)").Where("expense_id=? AND expense_member = ?", expense.ExpenseId, _userId).Scan(&amount)
 			amount = -amount
 			if result.Error != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
