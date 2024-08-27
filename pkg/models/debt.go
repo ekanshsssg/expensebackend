@@ -1,11 +1,5 @@
 package models
 
-// import (
-// 	_ "github.com/jinzhu/gorm"
-// 	"gorm.io/gorm"
-// 	"time"
-// )
-
 type Debt struct {
 	Id          int     `json:"id" gorm:"not null;primaryKey;autoIncrement"`
 	GroupId     int     `json:"group_id" gorm:"not null"`

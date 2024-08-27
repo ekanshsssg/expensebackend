@@ -9,11 +9,7 @@ import (
 
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
-
-	_ "github.com/jinzhu/gorm"
-	// "gorm.io/gorm"
 )
 
 type CreateGroupInput struct {

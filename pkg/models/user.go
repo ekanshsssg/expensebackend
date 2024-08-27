@@ -1,7 +1,6 @@
 package models
 
 import (
-	_ "github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

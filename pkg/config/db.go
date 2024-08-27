@@ -17,14 +17,8 @@ func ConnectDatabase() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// if err := database.AutoMigrate(&Group{}); err != nil {
-    //     fmt.Println("Failed to migrate database:", err)
-    //     return
-    // }
 	DB = database
 	// PingDatabase()
-	
-	
 }
 
 func GetDB() *gorm.DB {

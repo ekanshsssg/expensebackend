@@ -1,11 +1,5 @@
 package models
 
-// import (
-// 	_ "github.com/jinzhu/gorm"
-// 	"gorm.io/gorm"
-// 	"time"
-// )
-
 type Expensemember struct {
 	Id            int     `json:"id" gorm:"not null:primaryKey:autoIncrement"`
 	ExpenseId     int     `json:"expense_id" gorm:"not null"`

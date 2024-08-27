@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	_ "github.com/jinzhu/gorm"
 	"gorm.io/gorm"
 )
 

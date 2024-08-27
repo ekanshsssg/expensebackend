@@ -1,35 +1,14 @@
 package controller
 
 import (
-	// "database/sql"
 	"errors"
 	"expensebackend/pkg/config"
-	// "sort"
-
-	// "expensebackend/pkg/controller"
 	"expensebackend/pkg/models"
 	"fmt"
-
-	// "encoding/csv"
-	// "fmt"
-	// "gorm.io/driver/sql"
-	// "fmt"
 	"net/http"
-	// "strconv"
-
-	// "os"
-	// "time"
 	"github.com/gin-gonic/gin"
-
-	_ "github.com/jinzhu/gorm"
 	"gorm.io/gorm"
 )
-
-// type MembersInput struct {
-// 	GroupId int   `json:"group_id" binding:"required"`
-// 	UserId  int   `json:"user_id" binding:"required"`
-// 	Members []int `json:"members" binding:"required"`
-// }
 
 func GetMember(c *gin.Context) {
 	emailId := c.Query("emailId")

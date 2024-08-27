@@ -38,23 +38,16 @@ const (
 )
 
 func GenerateCsv(c *gin.Context) {
-	// groupId, err := strconv.Atoi(c.Param("groupId"))
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-	// 	return
-	// }
-	GroupId := c.Query("groupid")
-    groupId, err := strconv.Atoi(GroupId)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": fmt.Sprintf("Invalid group ID: %s", GroupId),
-        })
-        return
-    }
-	GroupName := c.Query("groupName")
+	groupId, err := strconv.Atoi(c.Query("groupid"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+	
+	groupName := c.Query("groupName")
 	// userId, err := strconv.Atoi(c.Query("userId"))
 	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err})
 	// 	return
 	// }
 
@@ -216,7 +209,7 @@ func GenerateCsv(c *gin.Context) {
 	}
 	s3Client := s3.New(sess)
 	// Upload CSV file to S3
-	objectKey := fmt.Sprintf("%s.csv", GroupName)
+	objectKey := fmt.Sprintf("%s.csv", groupName)
 	_, err = s3Client.PutObject(&s3.PutObjectInput{
 		Bucket:      aws.String(bucketName),
 		Key:         aws.String(objectKey),
