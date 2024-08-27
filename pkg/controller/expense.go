@@ -90,11 +90,11 @@ func AddExpense(c *gin.Context) {
 		return
 	}
 
-	activityDesc := fmt.Sprintf("%s added an expense '%s' of amount %s in '%s' ", userPaidName, input.Description, strconv.FormatFloat(input.Amount, 'f', 2, 64), groupName)
+	activityDesc := fmt.Sprintf("%s added an expense '%s' of amount ₹ %s in '%s' ", userPaidName, input.Description, strconv.FormatFloat(input.Amount, 'f', 2, 64), groupName)
 	activity := &models.Activity{GroupId: input.GroupId, ActivityDescription: activityDesc}
 	if err := transaction.Create(activity).Error; err != nil {
 		transaction.Rollback()
-		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -140,7 +140,7 @@ func AddExpense(c *gin.Context) {
 func GetExpenses(c *gin.Context) {
 	_userId, err := strconv.Atoi(c.Query("userId"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	groupId, err := strconv.Atoi(c.Query("groupId"))

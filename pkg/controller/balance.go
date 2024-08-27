@@ -112,7 +112,7 @@ func GetBalances(c *gin.Context) {
 func GetOverallBalance(c *gin.Context) {
 	_userId, err := strconv.Atoi(c.Query("userId"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

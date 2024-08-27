@@ -4,6 +4,7 @@ import (
 	"expensebackend/pkg/config"
 	"expensebackend/pkg/models"
 	"fmt"
+	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
@@ -68,7 +69,7 @@ func AddSettlement(c *gin.Context) {
 		return
 	}
 
-	activityDesc := fmt.Sprintf("%s paid %s amount %f in '%s", userPaidName, userRecivedName, input.Amount, groupName)
+	activityDesc := fmt.Sprintf("%s paid %s amount ₹ %s in '%s", userPaidName, userRecivedName, strconv.FormatFloat(input.Amount, 'f', 2, 64), groupName)
 	activity := &models.Activity{GroupId: input.GroupId, ActivityDescription: activityDesc}
 	if err := transaction.Create(activity).Error; err != nil {
 		transaction.Rollback()
@@ -99,7 +100,7 @@ func AddSettlement(c *gin.Context) {
 			users = append(users, userRecived)
 			go func() {
 				members = append(members, userRecived.EmailId)
-				message := fmt.Sprintf("%s paid %s amount ₹ %f in %s.", users[0].Name, users[1].Name, input.Amount, groupName)
+				message := fmt.Sprintf("%s paid %s amount ₹ %s in %s.", users[0].Name, users[1].Name, strconv.FormatFloat(input.Amount, 'f', 2, 64), groupName)
 				Maill(members, "Settlement done", message)
 			}()
 
