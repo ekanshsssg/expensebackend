@@ -46,7 +46,7 @@ func GenerateCsv(c *gin.Context) {
 	csvWriter := csv.NewWriter(c.Writer)
 
 	var groupMemList []models.Group
-	result := config.GetDB().Preload("User").Where("group_id=?", groupId).Find(&groupMemList)
+	result := config.GetDB().Unscoped().Preload("User").Where("group_id=?", groupId).Find(&groupMemList)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
