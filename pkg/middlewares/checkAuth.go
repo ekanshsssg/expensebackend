@@ -42,20 +42,20 @@ func CheckAuth(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token,login again"})
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token,login again"})
 		c.Abort()
 		return
 	}
 
 	if float64(time.Now().Unix()) > claims["exp"].(float64) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "token expired"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token expired,login again"})
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
